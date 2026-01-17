@@ -1,5 +1,4 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/timezone.dart' as tz;
 
 class NotificationService {
   final _plugin = FlutterLocalNotificationsPlugin();
@@ -7,36 +6,25 @@ class NotificationService {
   Future<void> init() async {
     const android = AndroidInitializationSettings('@mipmap/ic_launcher');
     const ios = DarwinInitializationSettings();
-    await _plugin.initialize(const InitializationSettings(android: android, iOS: ios));
-  }
-
-  Future<void> scheduleDaily(int hour, int minute, String text) async {
-    await _plugin.zonedSchedule(
-      0,
-      'Quote of the Day',
-      text,
-      _nextInstanceOfTime(hour, minute),
-      const NotificationDetails(
-        android: AndroidNotificationDetails(
-          'daily_quote',
-          'Daily Quote',
-          importance: Importance.high,
-        ),
-        iOS: DarwinNotificationDetails(),
-      ),
-      androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation:
-      UILocalNotificationDateInterpretation.absoluteTime,
-      matchDateTimeComponents: DateTimeComponents.time, // ensures daily repeat
+    await _plugin.initialize(
+      const InitializationSettings(android: android, iOS: ios),
     );
   }
 
-  tz.TZDateTime _nextInstanceOfTime(int hour, int minute) {
-    final now = tz.TZDateTime.now(tz.local);
-    var scheduled = tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
-    if (scheduled.isBefore(now)) {
-      scheduled = scheduled.add(const Duration(days: 1));
-    }
-    return scheduled;
+  Future<void> showInstantNotification(String text) async {
+    await _plugin.show(
+      0,
+      'Quote of the Day',
+      text,
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'instant_quote',
+          'Instant Quote',
+          importance: Importance.high,
+          priority: Priority.high,
+        ),
+        iOS: DarwinNotificationDetails(),
+      ),
+    );
   }
 }

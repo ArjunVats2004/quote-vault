@@ -4,8 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../data/repositories/settings_repository.dart';
 import '../../main.dart';
-import '../auth/login_screen.dart';
-
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
@@ -26,11 +24,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
       fontScale: fontScale,
       notificationTime: notificationTime,
     );
-    await SettingsRepository().syncRemote();
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('Settings saved')));
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Settings saved')),
+    );
   }
+
 
   Future<void> _signOut() async {
     try {
@@ -64,6 +62,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               fontWeight: FontWeight.bold,
             ),
           ),
+          const SizedBox(height: 20),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(20),
@@ -84,7 +83,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       value: 'system',
                       child: Text(
                         'System',
-                        style: TextStyle(color: Colors.orange, fontSize: 20),
+                        style: TextStyle(color: Colors.blue, fontSize: 20),
                       ),
                     ),
                     DropdownMenuItem(
@@ -122,7 +121,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       value: 'blue',
                       child: Text(
                         'Blue',
-                        style: TextStyle(color: Colors.orange, fontSize: 20),
+                        style: TextStyle(color: Colors.blue, fontSize: 20),
                       ),
                     ),
                     DropdownMenuItem(

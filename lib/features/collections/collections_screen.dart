@@ -58,38 +58,57 @@ class _CollectionsScreenState extends State<CollectionsScreen> {
 
     return Scaffold(
       backgroundColor: primary,
-      appBar: AppBar(
-        title: const Text('Collections', style: TextStyle(color: Colors.white)),
-        backgroundColor: primary,
-      ),
-      body: ListView(
-        children: collections.map((entry) {
-          final name = entry['name'];
-          final items = entry['collection_items'] as List<dynamic>;
-          return ExpansionTile(
-            title: Text(
-              name,
-              style: const TextStyle(
-                color: Colors.orange,
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
+      body: Column(
+        children: [
+          Text(
+            "collections",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
             ),
-            children: items.map((item) {
-              final q = item['quotes'];
-              return ListTile(
-                title: Text(
-                  q['text'],
-                  style: const TextStyle(color: Colors.white, fontSize: 20),
-                ),
-                subtitle: Text(
-                  q['author'],
-                  style: const TextStyle(color: Colors.white70, fontSize: 16),
-                ),
-              );
-            }).toList(),
-          );
-        }).toList(),
+          ),
+          SizedBox(height: 20),
+          Expanded(
+            child: ListView(
+              children: collections.map((entry) {
+                final name = entry['name'];
+                final items = entry['collection_items'] as List<dynamic>;
+                return Card(
+                  margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  color: Colors.grey[900],
+                  elevation: 4,
+                  child: ExpansionTile(
+                    title: Text(
+                      name,
+                      style: const TextStyle(
+                        color: Colors.orange,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    children: items.map((item) {
+                      final q = item['quotes'];
+                      return ListTile(
+                        title: Text(
+                          q['text'],
+                          style: const TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                        subtitle: Text(
+                          q['author'],
+                          style: const TextStyle(color: Colors.white70, fontSize: 16),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+        ],
       ),
     );
   }

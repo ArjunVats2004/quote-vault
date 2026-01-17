@@ -3,6 +3,18 @@ import '../supabase_client.dart';
 class CollectionsRepository {
   final _db = SupabaseService.client;
 
+  Future<List<String>> getCollections() async {
+    final uid = _db.auth.currentUser?.id;
+    if (uid == null) return [];
+    final res = await _db
+        .from('collections')
+        .select('name')
+        .eq('user_id', uid);
+    return (res as List)
+        .map((row) => row['name'] as String)
+        .toList();
+  }
+
   Future<List<Map<String, dynamic>>> listCollections() async {
     final uid = _db.auth.currentUser!.id;
     final rows = await _db

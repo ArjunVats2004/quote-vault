@@ -17,12 +17,31 @@ class SettingsModel extends ChangeNotifier {
   String theme = 'system';
   String accent = 'blue';
   double fontScale = 1.0;
-
   void update({String? theme, String? accent, double? fontScale}) {
     if (theme != null) this.theme = theme;
     if (accent != null) this.accent = accent;
     if (fontScale != null) this.fontScale = fontScale;
     notifyListeners();
+  }
+  Color get accentColor {
+    switch (accent) {
+      case 'green':
+        return Colors.green;
+        case 'red':
+          return Colors.red;
+          default:
+            return Colors.blue;
+    }
+  }
+  ThemeMode get themeMode {
+    switch (theme) {
+      case 'light':
+        return ThemeMode.light;
+        case 'dark':
+          return ThemeMode.dark;
+          default:
+            return ThemeMode.system;
+    }
   }
 }
 
@@ -67,8 +86,7 @@ Future<void> main() async {
   await requestNotificationPermission();
   final supabaseService = SupabaseServices();
   final quote = await supabaseService.fetchRandomQuote();
-  await notificationService.scheduleDaily(9, 0, quote);
-
+  await notificationService.showInstantNotification(quote);
   runApp(
     ChangeNotifierProvider(
       create: (_) => SettingsModel(),
